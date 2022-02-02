@@ -37,7 +37,7 @@ function which let's you start off a future and `await` it later so you
 can run multiple futures concurrently.
 
 As I suggested in the start of this book, visiting [@stjepan'sblog series about implementing your own executors](https://web.archive.org/web/20200207092849/https://stjepang.github.io/2020/01/31/build-your-own-executor.html)
-is the place I would start and take it from there.
+is the place I would start and take it from there. You could further examine the source code of [smol - A small and fast async runtime](https://github.com/smol-rs/smol) wich is a good project to learn from.
 
 ### Create an unique Id for each task
 
@@ -68,7 +68,11 @@ linked to in the book, here are some of my suggestions:
 
 [The official Asyc book](https://rust-lang.github.io/async-book/01_getting_started/01_chapter.html)
 
+[Tokio tutorial](https://tokio.rs/tokio/tutorial)
+
 [The async_std book](https://book.async.rs/)
+
+[smol - a small and fast async runtime](https://github.com/smol-rs/async-executor/blob/master/src/lib.rs)
 
 [Aron Turon: Designing futures for Rust](https://aturon.github.io/blog/2016/09/07/futures-design/)
 

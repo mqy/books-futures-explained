@@ -17,8 +17,7 @@ simple runtime in this book introducing some concepts but it's enough to get
 started.
 
 [Stjepan Glavina](https://web.archive.org/web/20200812203230/https://github.com/stjepang)
-has made an excellent series of articles about async runtimes and executors,
-and if the rumors are right there is more to come from him in the near future.
+has made an excellent series of articles about async runtimes and executors.
 
 The way you should go about it is to read this book first, then continue
 reading [Stjepan's articles](https://web.archive.org/web/20200610130514/https://stjepang.github.io/)
@@ -26,6 +25,9 @@ to learn more about runtimes and how they work, especially:
 
 1. [Build your own block_on()](https://web.archive.org/web/20200511234503/https://stjepang.github.io/2020/01/25/build-your-own-block-on.html)
 2. [Build your own executor](https://web.archive.org/web/20200207092849/https://stjepang.github.io/2020/01/31/build-your-own-executor.html)
+
+You should also check out the [smol](https://github.com/smol-rs/smol) runtime
+as it's a real runtime made by the same author. It's well commented and made to be easy to learn from.
 
 I've limited myself to a 200 line main example (hence the title) to limit the
 scope and introduce an example that can easily be explored further.
