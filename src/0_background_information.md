@@ -92,6 +92,7 @@ that they implement a way to do multitasking by having a "userland"
 runtime.
 
 ## Green threads/stackful coroutines
+
 In this book I'll use the term "green threads" to mean stackful coroutines to differentiate
 them from the other continuation mechanisms described in this chapter. You can, however, see
 the term "green threads" be used to describe a broader set of continuation mechanisms in different
@@ -108,7 +109,7 @@ Rust had green threads once, but they were removed before it hit 1.0. The state
 of execution is stored in each stack so in such a solution there would be no
 need for `async`, `await`, `Future` or `Pin`. In many ways, green threads mimics how
 an operating system facilitates concurrency, and implementing them is a great
-learning experience. 
+learning experience.
 
 **The typical flow looks like this:**
 

@@ -44,7 +44,7 @@ The first thing an `executor` does when it gets a `Future` is polling it.
 Rust provides a way for the Reactor and Executor to communicate through the `Waker`. The reactor stores this `Waker` and calls `Waker::wake()` on it once
 a `Future` has resolved and should be polled again.
 
-> Notice that this chapter has a bonus section called [A  Proper Way to Park our Thread](./6_future_example.md#bonus-section---a-proper-way-to-park-our-thread) which shows how to avoid `thread::park`.
+> Notice that this chapter has a bonus section called [A Proper Way to Park our Thread](./6_future_example.md#bonus-section---a-proper-way-to-park-our-thread) which shows how to avoid `thread::park`.
 
 **Our Executor will look like this:**
 
@@ -55,7 +55,7 @@ fn block_on<F: Future>(mut future: F) -> F::Output {
     // the first thing we do is to construct a `Waker` which we'll pass on to
     // the `reactor` so it can wake us up when an event is ready.
     let mywaker = Arc::new(MyWaker{ thread: thread::current() });
-    let waker = waker_into_waker(Arc::into_raw(mywaker));
+    let waker = mywaker_into_waker(Arc::into_raw(mywaker));
 
     // The context struct is just a wrapper for a `Waker` object. Maybe in the
     // future this will do more, but right now it's just a wrapper.
@@ -89,10 +89,10 @@ In all the examples you'll see in this chapter I've chosen to comment the code
 extensively. I find it easier to follow along that way so I'll not repeat myself
 here and focus only on some important aspects that might need further explanation.
 
-It's worth noting that simply calling `thread::sleep` as we do here can lead to
+It's worth noting that simply calling `thread::park` as we do here can lead to
 both deadlocks and errors. We'll explain a bit more later and fix this if you
-read all the way to the [Bonus Section](./6_future_example.md##bonus-section---a-proper-way-to-park-our-thread) at
-the end of this chapter.
+read all the way to the [Bonus Section](./6_future_example.md#bonus-section---a-proper-way-to-park-our-thread)
+at the end of this chapter.
 
 For now, we keep it as simple and easy to understand as we can by just going
 to sleep.
@@ -104,10 +104,10 @@ exact same challenges as we do when borrowing across `yield` points.
 
 > `Context` is just a wrapper around the `Waker`. At the time of writing this
 book it's nothing more. In the future it might be possible that the `Context`
-object will do more than just wrapping a `Future` so having this extra
+object will do more than just wrapping a `Waker` so having this extra
 abstraction gives some flexibility.
 
-As explained in the [chapter about generators](./3_generators_pin.md), we use
+As explained in the [chapter about Pin](./5_pin.md), we use
 `Pin` and the guarantees that give us to allow `Future`s to have self
 references.
 
@@ -175,7 +175,7 @@ const VTABLE: RawWakerVTable = unsafe {
 
 // Instead of implementing this on the `MyWaker` object in `impl Mywaker...` we
 // just use this pattern instead since it saves us some lines of code.
-fn waker_into_waker(s: *const MyWaker) -> Waker {
+fn mywaker_into_waker(s: *const MyWaker) -> Waker {
     let raw_waker = RawWaker::new(s as *const (), &VTABLE);
     unsafe { Waker::from_raw(raw_waker) }
 }
@@ -298,7 +298,6 @@ which it will call once the task is finished.
 To be able to run the code here in the browser there is not much real I/O we
 can do so just pretend that this is actually represents some useful I/O operation
 for the sake of this example.
-
 
 **Our Reactor will look like this:**
 
@@ -494,7 +493,7 @@ fn main() {
 #     let mywaker = Arc::new(MyWaker {
 #         thread: thread::current(),
 #     });
-#     let waker = waker_into_waker(Arc::into_raw(mywaker));
+#     let waker = mywaker_into_waker(Arc::into_raw(mywaker));
 #     let mut cx = Context::from_waker(&waker);
 #
 #     // SAFETY: we shadow `future` so it can't be accessed again.
@@ -542,7 +541,7 @@ fn main() {
 #     )
 # };
 #
-# fn waker_into_waker(s: *const MyWaker) -> Waker {
+# fn mywaker_into_waker(s: *const MyWaker) -> Waker {
 #     let raw_waker = RawWaker::new(s as *const (), &VTABLE);
 #     unsafe { Waker::from_raw(raw_waker) }
 # }
@@ -735,7 +734,7 @@ Don't forget the exercises in the last chapter 😊.
 
 ## Bonus Section - a Proper Way to Park our Thread
 
-As we explained earlier in our chapter, simply calling `thread::sleep` is not really
+As we explained earlier in our chapter, simply calling `thread::park` is not really
 sufficient to implement a proper reactor. You can also reach a tool like the `Parker`
 in crossbeam: [crossbeam::sync::Parker][crossbeam_parker]
 
