@@ -581,7 +581,6 @@ by adding `std::marker::PhantomPinned` to your type on stable.
 > guarantees you normally get from the compiler. An `unsafe` implementation can
 > be perfectly safe to do, but you have no safety net.
 
-
 ### Projection/structural pinning
 
 In short, projection is a programming language term. `mystruct.field1` is a

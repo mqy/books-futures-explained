@@ -107,7 +107,7 @@ you'll just use the one provided for you.
 I find it easier to reason about how Futures work by creating a high level mental model we can use.
 To do that I have to introduce the concept of a runtime which will drive our Futures to completion.
 
->Please note that the mental model I create here is not the *only* way to drive Futures to
+>Please note that the mental model I create here is not the **only** way to drive Futures to
 completion and that Rust’s Futures does not impose any restrictions on how you actually accomplish
 this task.
 
@@ -217,7 +217,7 @@ The problem with #2 is that if you switch runtime you need to make sure that it
 supports this kind of supervision as well or else you will end up blocking the
 executor.
 
-#3 is more of theoretical importance, normally you'd be happy by sending the task
+And #3 is more of theoretical importance, normally you'd be happy by sending the task
 to the thread-pool most runtimes provide.
 
 Most executors have a way to accomplish #1 using methods like `spawn_blocking`.
@@ -238,10 +238,10 @@ general, I know where you're coming from and I have written some resources to
 try to give a high-level overview that will make it easier to learn Rust's
 Futures afterwards:
 
-* [Async Basics - The difference between concurrency and parallelism](https://cfsamson.github.io/book-exploring-async-basics/1_concurrent_vs_parallel.html)
-* [Async Basics - Async history](https://cfsamson.github.io/book-exploring-async-basics/2_async_history.html)
-* [Async Basics - Strategies for handling I/O](https://cfsamson.github.io/book-exploring-async-basics/5_strategies_for_handling_io.html)
-* [Async Basics - Epoll, Kqueue and IOCP](https://cfsamson.github.io/book-exploring-async-basics/6_epoll_kqueue_iocp.html)
+- [Async Basics - The difference between concurrency and parallelism](https://cfsamson.github.io/book-exploring-async-basics/1_concurrent_vs_parallel.html)
+- [Async Basics - Async history](https://cfsamson.github.io/book-exploring-async-basics/2_async_history.html)
+- [Async Basics - Strategies for handling I/O](https://cfsamson.github.io/book-exploring-async-basics/5_strategies_for_handling_io.html)
+- [Async Basics - Epoll, Kqueue and IOCP](https://cfsamson.github.io/book-exploring-async-basics/6_epoll_kqueue_iocp.html)
 
 Learning these concepts by studying futures is making it much harder than
 it needs to be, so go on and read these chapters if you feel a bit unsure.
@@ -307,4 +307,3 @@ understanding of what the concerns are.
 [tokio]: https://github.com/tokio-rs/tokio
 [compat_info]: https://rust-lang.github.io/futures-rs/blog/2019/04/18/compatibility-layer.html
 [futures_rs]: https://github.com/rust-lang/futures-rs
-

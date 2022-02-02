@@ -76,7 +76,7 @@ linked to in the book, here are some of my suggestions:
 
 [The Tokio Blog](https://tokio.rs/blog/2019-10-scheduler/)
 
-[Stjepan's blog with a series where he implements an Executor](https://stjepang.github.io/)
+[Stjepan's blog with a series where he implements an Executor](https://web.archive.org/web/20200207092849/https://stjepang.github.io/2020/01/31/build-your-own-executor.html)
 
 [Jon Gjengset's video on The Why, What and How of Pinning in Rust](https://youtu.be/DkMwYxfSYNQ)
 
