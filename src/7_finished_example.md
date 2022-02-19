@@ -28,9 +28,17 @@ fn main() {
 }
 
 use std::{
-    future::Future, sync::{ mpsc::{channel, Sender}, Arc, Mutex, Condvar},
-    task::{Context, Poll, RawWaker, RawWakerVTable, Waker}, mem, pin::Pin,
-    thread::{self, JoinHandle}, time::{Duration, Instant}, collections::HashMap
+    collections::HashMap,
+    future::Future,
+    mem,
+    pin::Pin,
+    sync::{
+        mpsc::{channel, Sender},
+        Arc, Condvar, Mutex,
+    },
+    task::{Context, Poll, RawWaker, RawWakerVTable, Waker},
+    thread::{self, JoinHandle},
+    time::{Duration, Instant},
 };
 // ============================= EXECUTOR ====================================
 #[derive(Default)]
@@ -39,9 +47,9 @@ struct Parker(Mutex<bool>, Condvar);
 impl Parker {
     fn park(&self) {
         let mut resumable = self.0.lock().unwrap();
-            while !*resumable {
-                resumable = self.1.wait(resumable).unwrap();
-            }
+        while !*resumable {
+            resumable = self.1.wait(resumable).unwrap();
+        }
         *resumable = false;
     }
 
@@ -53,7 +61,9 @@ impl Parker {
 
 fn block_on<F: Future>(mut future: F) -> F::Output {
     let parker = Arc::new(Parker::default());
-    let mywaker = Arc::new(MyWaker { parker: parker.clone() });
+    let mywaker = Arc::new(MyWaker {
+        parker: parker.clone(),
+    });
     let waker = mywaker_into_waker(Arc::into_raw(mywaker));
     let mut cx = Context::from_waker(&waker);
 
@@ -116,8 +126,8 @@ impl Future for Task {
         if r.is_ready(self.id) {
             *r.tasks.get_mut(&self.id).unwrap() = TaskState::Finished;
             Poll::Ready(self.id)
-        } else if r.tasks.contains_key(&self.id) {
-            r.tasks.insert(self.id, TaskState::NotReady(cx.waker().clone()));
+        } else if let std::collections::hash_map::Entry::Occupied(mut e) = r.tasks.entry(self.id) {
+            e.insert(TaskState::NotReady(cx.waker().clone()));
             Poll::Pending
         } else {
             r.register(self.data, cx.waker().clone(), self.id);
@@ -169,7 +179,9 @@ impl Reactor {
                     }
                 }
             }
-            handles.into_iter().for_each(|handle| handle.join().unwrap());
+            handles
+                .into_iter()
+                .for_each(|handle| handle.join().unwrap());
         });
         reactor.lock().map(|mut r| r.handle = Some(handle)).unwrap();
         reactor
@@ -180,7 +192,7 @@ impl Reactor {
         match mem::replace(state, TaskState::Ready) {
             TaskState::NotReady(waker) => waker.wake(),
             TaskState::Finished => panic!("Called 'wake' twice on task: {}", id),
-            _ => unreachable!()
+            _ => unreachable!(),
         }
     }
 
@@ -192,10 +204,10 @@ impl Reactor {
     }
 
     fn is_ready(&self, id: usize) -> bool {
-        self.tasks.get(&id).map(|state| match state {
-            TaskState::Ready => true,
-            _ => false,
-        }).unwrap_or(false)
+        self.tasks
+            .get(&id)
+            .map(|state| matches!(state, TaskState::Ready))
+            .unwrap_or(false)
     }
 }
 

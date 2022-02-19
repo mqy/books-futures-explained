@@ -34,7 +34,7 @@ On a more serious note, I feel obliged to mention that there are valid reasons
 for the names that were chosen. Naming is not easy, and I considered renaming
 `Unpin` and `!Unpin` in this book to make them easier to reason about.
 
-However, an experienced member of the Rust community convinced me that that there
+However, an experienced member of the Rust community convinced me that there
 are just too many nuances and edge-cases to consider which are easily overlooked when
 naively giving these markers different names, and I'm convinced that we'll
 just have to get used to them and use them as is.

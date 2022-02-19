@@ -73,7 +73,7 @@ the needed state increases with each added step.
 
 This is the model used in Rust today. It has a few notable advantages:
 
-1. It's easy to convert normal Rust code to a stackless coroutine using using
+1. It's easy to convert normal Rust code to a stackless coroutine using
 async/await as keywords (it can even be done using a macro).
 2. No need for context switching and saving/restoring CPU state
 3. No need to handle dynamic stack allocation
